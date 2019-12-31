@@ -1,3 +1,30 @@
-# NeteaseMusic
-利用网易云音乐提供的接口，仿造网易云音乐写的一个vue项目，Vue全家桶：vue2.0+vuex+axios+better-scroll，用到的组件有mint-ui
+# neteasecloudmusic
 
+> A Vue.js project
+
+## Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+
+# run unit tests
+npm run unit
+
+# run e2e tests
+npm run e2e
+
+# run all tests
+npm test
+```
+
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
