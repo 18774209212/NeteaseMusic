@@ -24,4 +24,7 @@ body{
 >>>.iconfont{
   font-size: 40px;
 }
+body::-webkit-scrollbar {
+    display: none;    
+}
 </style>

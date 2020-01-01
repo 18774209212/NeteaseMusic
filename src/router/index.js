@@ -7,6 +7,12 @@ let router=new VueRouter({
     path:'/',
     name:'Home',
     component:resolve=>require(['@/pages/home'],resolve)
-  }]
+  },
+  {
+    path:'/playSong',
+    name:'PlaySong',
+    component:resolve=>require(['@/pages/playSong'],resolve)
+  },
+]
 })
 export default router

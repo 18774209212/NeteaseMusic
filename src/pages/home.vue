@@ -56,18 +56,27 @@
               <List :recommendSongs="recommendSongs"></List>
           </div>
       </div>
+      <div class="recommend">
+          <div class="head">
+              <p>推荐歌曲</p>
+          </div>
+          <div class="list">
+              <SongList :newSongs="newSongs"></SongList>
+          </div>
+      </div>
   </div>
 </template>
 
 <script>
-import {recommendSongs} from '@/api/musicAPI'
+import {recommendSongs,recommendNewSongs} from '@/api/musicAPI'
 import Swipe from "@/components/swipe"
 import List from "@/components/list"
+import SongList from "@/components/songList"
 export default { 
   name:'Home',
   data () {
     return {
-        limit:6,
+        limit:9,
         bannerList:[
             {
                 src:'static/imgs/banner1.jpg'
@@ -82,24 +91,48 @@ export default {
                 src:'static/imgs/banner4.jpg'
             }
         ],
-        recommendSongs:[]
+        recommendSongs:[],
+        newSongs:[]
     };
   },
 
   components: {
       Swipe,
-      List
+      List,
+      SongList
   },
 
+  filters: {
+    million: function(value) {
+        let num;
+      //过万处理
+      if (value > 9999) {
+        //大于9999显示x.xx万
+        num = Math.floor(Math.floor(value / 1000) / 10) + "万";
+      } else if (value < 9999 && value > -9999) {
+        num = value;
+      } else if (value < -9999) {
+        //小于-9999显示-x.xx万
+        num = -(Math.floor(Math.abs(value) / 1000) / 10) + "万";
+      }
+      return num;
+    }
+  },
   created(){
       recommendSongs(this.limit).then(res=>{
           let data=res.result;
+          for(var i=0;i<data.length;i++){
+            data[i].playCount=this.$options.filters['million'](data[i].playCount);
+          }
           this.recommendSongs=data;
-          console.log(this.recommendSongs)
+      });
+      recommendNewSongs(this.limit).then(res=>{
+          let result=res.result;
+          this.newSongs=result.slice(0,9);
       })
   },
   computed: {},
-
+  
   mounted(){
   },
   methods: {}
@@ -108,8 +141,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .container{
-    width:96%;
-    padding:16px;
+    padding:16px 32px 16px 32px;
     font-size:24px;
     .head{
         .iconfont{
@@ -166,6 +198,7 @@ export default {
                     }
                 }
                 p{
+                    height:64px;
                     color:#545454;
                 }
             }
