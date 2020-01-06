@@ -40,7 +40,7 @@ export default {
         }
         .playCount{
             position:absolute;
-            top:-8%;
+            top:8%;
             right:10%;
             i,span{
                 font-size: 24px;

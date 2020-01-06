@@ -5,13 +5,18 @@ let router=new VueRouter({
   base:'/music/',
   routes:[{
     path:'/',
-    name:'Home',
-    component:resolve=>require(['@/pages/home'],resolve)
+    name:'SongSheet',
+    component:resolve=>require(['@/pages/songSheet'],resolve)
   },
   {
     path:'/playSong',
     name:'PlaySong',
     component:resolve=>require(['@/pages/playSong'],resolve)
+  },
+  {
+    path:'/search',
+    name:'Search',
+    component:resolve=>require(['@/pages/search'],resolve)
   },
 ]
 })

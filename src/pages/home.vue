@@ -13,7 +13,7 @@
                   <li>视频</li>
               </ul>
           </div>
-          <div class="right">
+          <div class="right" @click="search">
               <i class="iconfont icon-sousuo"></i>
           </div>
       </div>
@@ -135,7 +135,11 @@ export default {
   
   mounted(){
   },
-  methods: {}
+  methods: {
+      search(){
+          this.$router.push({path:'/search'})
+      }
+  }
 }
 
 </script>
