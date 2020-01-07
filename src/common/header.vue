@@ -23,8 +23,7 @@ export default {
     display:flex;
     padding: 0.3rem 0;
     .left{
-        width:15%;
-        text-align:center;
+        width: 10%;
         i{
             color:#fff;
             font-size:40px;

@@ -53,7 +53,7 @@
               <p>推荐歌单</p>
           </div>
           <div class="list">
-              <List :recommendSongs="recommendSongs"></List>
+              <List :recommendSongs="recommendSongs" @select="selectItem"></List>
           </div>
       </div>
       <div class="recommend">
@@ -61,7 +61,7 @@
               <p>推荐歌曲</p>
           </div>
           <div class="list">
-              <SongList :newSongs="newSongs"></SongList>
+              <SongList :newSongs="newSongs" @selectSong="selectSong"></SongList>
           </div>
       </div>
   </div>
@@ -137,7 +137,13 @@ export default {
   },
   methods: {
       search(){
-          this.$router.push({path:'/search'})
+        this.$router.push({path:'/search'})
+      },
+      selectItem(item,index){
+          console.log("选择的歌单",item)
+      },
+      selectSong(item){
+          console.log("选择的歌曲",item);
       }
   }
 }

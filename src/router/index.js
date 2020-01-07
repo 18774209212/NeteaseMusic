@@ -5,8 +5,8 @@ let router=new VueRouter({
   base:'/music/',
   routes:[{
     path:'/',
-    name:'SongSheet',
-    component:resolve=>require(['@/pages/songSheet'],resolve)
+    name:'Home',
+    component:resolve=>require(['@/pages/home'],resolve)
   },
   {
     path:'/playSong',

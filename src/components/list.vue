@@ -2,7 +2,7 @@
 <template>
   <div class="list">
     <ul>
-      <li v-for="(item,index) in recommendSongs" :key="index">
+      <li v-for="(item,index) in recommendSongs" :key="index" @click="selectItem(item,index)">
         <div class="img">
           <img :src="item.picUrl" />
           <p class="playCount">
@@ -19,7 +19,12 @@
 <script>
 export default {
   name: "List",
-  props: ["recommendSongs"]
+  props: ["recommendSongs"],
+  methods:{
+    selectItem(item,index){
+      this.$emit("select",item,index);
+    }
+  }
 };
 </script>
 <style lang="stylus" scoped>

@@ -36,22 +36,36 @@
           </div>
       </div>
     </div>
+    <div class="song-list-wrapper">
+      <div class="head"> 
+        <span>播放全部</span>
+        <span>(共{{}}首)</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Header from "@/common/header";
+import {getRecommendListDetail} from "@/api/musicAPI"
 export default {
   name: "SongSheet",
   data() {
-    return {};
+    return {
+      listDetail:[]
+    };
   },
 
   components: {
     Header
   },
 
-  created() {},
+  created() {
+    var listId=this.$route.query.listId;
+    getRecommendListDetail(listId).then(res=>{
+      console.log(res)
+    })
+  },
 
   computed: {},
 

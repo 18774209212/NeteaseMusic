@@ -2,7 +2,7 @@
 <template>
   <div class="list">
     <ul>
-      <li v-for="(item,index) in newSongs" :key="index" @click="toPlaySong(item.id)">
+      <li v-for="(item,index) in newSongs" :key="index" @click="selectSong(item)">
         <div class="img">
           <img :src="item.picUrl" />
           <p class="playCount" v-if="item.playCount">
@@ -24,8 +24,8 @@ export default {
   name: "SongList",
   props: ["newSongs"],
   methods:{
-      toPlaySong(id){
-          this.$router.push({path:'/playSong',query:{id:id}})
+      selectSong(item){
+          this.$emit("selectSong",item);
       }
   }
 };
