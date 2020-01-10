@@ -1,4 +1,4 @@
-<!--  -->
+<!-- 音乐播放组件 -->
 <template>
   <div></div>
 </template>
@@ -21,5 +21,5 @@ export default {
 }
 
 </script>
-<style scoped>
+<style lang="stylus" scoped>
 </style>

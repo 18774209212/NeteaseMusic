@@ -63,11 +63,12 @@
         </div>
       </div>
     </div>
+    <audio ref="audio" autoplay></audio>
   </div>
 </template>
 
 <script>
-import { getSongDetail,getSongUrl } from "@/api/musicAPI";
+import { getSongDetail,getSongUrl,getLyrc } from "@/api/musicAPI";
 export default {
   name: "PlaySong",
   data() {
@@ -83,6 +84,7 @@ export default {
     let id = this.$route.query.id;
     getSongDetail(id).then(res=>{
         this.songDetail=res.songs[0];
+        this.$store.commit('SET_CURRENTSONG',this.songDetail);
     });
     getSongUrl(id).then(res=>{
       if(res.code==200){
@@ -100,6 +102,18 @@ export default {
   methods: {
     goBack() {
       this.$router.go(-1);
+    },
+    _getLyrc(id){
+      //获取歌词
+      getLyrc(newUrl.id).then(res=>{
+        console.log("歌词",res);
+      })
+    }
+  },
+  watch:{
+    songUrl(newUrl){
+      this._getLyrc(newUrl.id);
+      this.$refs.audio.src=newUrl.url;
     }
   }
 };
