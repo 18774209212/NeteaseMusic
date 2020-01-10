@@ -18,6 +18,11 @@ let router=new VueRouter({
     name:'Search',
     component:resolve=>require(['@/pages/search'],resolve)
   },
+  {
+    path:'/songSheet',
+    name:'SongSheet',
+    component:resolve=>require(['@/pages/songSheet'],resolve)
+  }
 ]
 })
 export default router

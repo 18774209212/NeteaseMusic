@@ -72,6 +72,7 @@ import {recommendSongs,recommendNewSongs} from '@/api/musicAPI'
 import Swipe from "@/components/swipe"
 import List from "@/components/list"
 import SongList from "@/components/songList"
+import {mapMutations} from "vuex"
 export default { 
   name:'Home',
   data () {
@@ -125,6 +126,7 @@ export default {
             data[i].playCount=this.$options.filters['million'](data[i].playCount);
           }
           this.recommendSongs=data;
+          this.$store.commit('SET_SONGLIST',data)
       });
       recommendNewSongs(this.limit).then(res=>{
           let result=res.result;
@@ -140,9 +142,10 @@ export default {
         this.$router.push({path:'/search'})
       },
       selectItem(item,index){
-          console.log("选择的歌单",item)
+          this.$router.push({path:'/songSheet',query:{listId:item.id}});
       },
       selectSong(item){
+          this.$router.push({path:'/playSong'});
           console.log("选择的歌曲",item);
       }
   }

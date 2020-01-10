@@ -5,26 +5,26 @@
       <Header title="歌单"></Header>
       <div class="content">
         <div class="left">
-          <img src="static/imgs/songPic.jpg" />
+          <img :src="listDetail.coverImgUrl" />
         </div>
         <div class="right">
           <div class="title">
-            <p>2020年，愿我们一切美好 如期而至</p>
+            <p>{{listDetail.name}}</p>
           </div>
           <div class="uploadUser">
-            <img src="static/imgs/songPic.jpg" />
-            <p>北辰浅巷墨漓</p>
+            <img :src="listDetail.creator.avatarUrl" />
+            <p>{{listDetail.creator.nickname}}</p>
           </div>
         </div>
       </div>
       <div class="btns">
           <div>
             <i class="iconfont icon-jianyi"></i>
-            <p>225</p>
+            <p>{{listDetail.commentCount}}</p>
           </div>
           <div>
             <i class="iconfont icon-fenxiang-1"></i>
-            <p>178</p>
+            <p>{{listDetail.shareCount}}</p>
           </div>
           <div>
             <i class="iconfont icon-xiazai"></i>
@@ -36,18 +36,27 @@
           </div>
       </div>
     </div>
-    <div class="song-list-wrapper">
+    <div class="song-list-wrapper" v-show="listDetail.tracks">
       <div class="head"> 
-        <span>播放全部</span>
-        <span>(共{{}}首)</span>
+        <span class="first">播放全部</span>
+        <span>(共{{listDetail.tracks.length}}首)</span>
       </div>
+      <div class="list">
+        <SheetList :songSheet="listDetail.tracks"></SheetList>
+      </div>
+    </div>
+    <div v-show="!listDetail.tracks">
+      <Loading></Loading>
     </div>
   </div>
 </template>
 
 <script>
-import Header from "@/common/header";
+import Header from "@/common/header/header";
+import Loading from "@/common/loading/loading"
 import {getRecommendListDetail} from "@/api/musicAPI"
+import {Toast} from "mint-ui"
+import SheetList from "@/components/sheetList"
 export default {
   name: "SongSheet",
   data() {
@@ -57,13 +66,25 @@ export default {
   },
 
   components: {
-    Header
+    Header,
+    SheetList,
+    Loading
   },
 
   created() {
     var listId=this.$route.query.listId;
     getRecommendListDetail(listId).then(res=>{
-      console.log(res)
+      if(res.code==200){
+        this.listDetail=res.playlist;
+        if(this.listDetail.shareCount>=10000){
+          this.listDetail.shareCount=Math.floor(this.listDetail.shareCount/1000)+'万';
+        }
+        if(this.listDetail.commentCount>=10000){
+          this.listDetail.commentCount=Math.floor(this.listDetail.commentCount/1000)+'万';
+        }
+      }else{
+        Toast("获取歌曲失败")
+      }
     })
   },
 
@@ -136,6 +157,26 @@ export default {
             font-size:28px;
             color:#fff;
         }
+      }
+    }
+  }
+  .song-list-wrapper{
+    width:100%;
+    font-family: 'Segoe UI';
+    position: absolute;
+    top: 46%;
+    background: #fff;
+    border-radius:40px 40px 0 0;
+    .head{
+      span:nth-child(1){
+        display:inline-block;
+        padding:36px 0 16px 90px;
+        font-size:36px;
+        color:#383A39;
+      }
+      span:nth-child(2){
+        font-size:32px;
+        color:#9C9C9C;
       }
     }
   }
