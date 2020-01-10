@@ -67,12 +67,13 @@
 </template>
 
 <script>
-import { getSongDetail } from "@/api/musicAPI";
+import { getSongDetail,getSongUrl } from "@/api/musicAPI";
 export default {
   name: "PlaySong",
   data() {
     return {
-      songDetail: {}
+      songDetail: {},
+      songUrl:{}
     };
   },
 
@@ -80,8 +81,15 @@ export default {
 
   created() {
     let id = this.$route.query.id;
-    getSongDetail('1409382131').then(res=>{
+    getSongDetail(id).then(res=>{
         this.songDetail=res.songs[0];
+    });
+    getSongUrl(id).then(res=>{
+      if(res.code==200){
+          this.songUrl=res.data[0];
+      }else{
+        Toast('获取歌曲失败');
+      }
     })
   },
   mounted() {

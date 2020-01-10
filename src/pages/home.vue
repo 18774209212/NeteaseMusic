@@ -145,8 +145,7 @@ export default {
           this.$router.push({path:'/songSheet',query:{listId:item.id}});
       },
       selectSong(item){
-          this.$router.push({path:'/playSong'});
-          console.log("选择的歌曲",item);
+          this.$router.push({path:'/playSong',query:{id:item.id}});
       }
   }
 }
