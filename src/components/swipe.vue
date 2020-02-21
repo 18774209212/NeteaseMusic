@@ -3,7 +3,7 @@
   <div class="swipe">
     <mt-swipe :auto="4000">
         <mt-swipe-item  v-for="(item,index) in bannerList" :key="index">
-            <img :src="item.src"/>
+            <img :src="item.imageUrl"/>
         </mt-swipe-item>
     </mt-swipe>
   </div>

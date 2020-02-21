@@ -1,7 +1,10 @@
-import db from "../utils/localStorage"
-
+import db from "@/utils/localStorage"
+import {playMode} from "@/utils/config"
 const state ={
-    //获取歌单列表
-    musicList:db.get("SONGlIST")
-}
+    currentSong:db.get('currentSong')? db.get('currentSong'): {},
+    playing:false,
+    musicList:[],
+    currentIndex:-1,
+    mode:playMode.sequence
+};
 export default state

@@ -14,13 +14,12 @@ module.exports = {
     assetsPublicPath:'/',
     proxyTable:{
       '/musicApi':{
-        target:'http://192.168.10.63:3000/',
+        target:'http://192.168.0.109:3000/',
         changeOrigin:true,  //跨域
         pathRewrite:{
           '^/musicApi':'/'
         }
       },
-
     }
   },
   build: {

@@ -1,7 +1,9 @@
 let db={
     save(key,value){
         //JSON.stringify(value)将 JavaScript 值转换为 JSON 字符串。
-        localStorage.setItem(key,JSON.stringify(value));
+        if(value){
+            localStorage.setItem(key,JSON.stringify(value));
+        }
     },
     get(key,defaultValue={}){
         //JSON.parse()将Json字符串转换为JSON格式

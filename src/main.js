@@ -9,10 +9,13 @@ import 'mint-ui/lib/style.css'
 import 'lib-flexible'
 import './icon/iconfont.css'
 import '@/assets/css/base.css'
+import moment from "moment"
+import Vuex from "vuex"
 Vue.config.productionTip = false
 Vue.use(store)
 Vue.use(MintUI)
-
+Vue.use(moment)
+Vue.use(Vuex)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

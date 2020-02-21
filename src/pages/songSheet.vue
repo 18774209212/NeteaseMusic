@@ -1,5 +1,6 @@
 <!-- 歌单页面 -->
 <template>
+<div class="box">
   <div class="container">
     <div class="con">
       <Header title="歌单"></Header>
@@ -42,21 +43,23 @@
         <span>(共{{listDetail.tracks.length}}首)</span>
       </div>
       <div class="list">
-        <SheetList :songSheet="listDetail.tracks"></SheetList>
+        <SheetList :songSheet="listDetail.tracks" @play="playMusic"></SheetList>
       </div>
     </div>
     <div v-show="!listDetail.tracks">
       <Loading></Loading>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 import Header from "@/common/header/header";
 import Loading from "@/common/loading/loading"
-import {getRecommendListDetail} from "@/api/musicAPI"
+import {getRecommendListDetail,getSongUrl} from "@/api/musicAPI"
 import {Toast} from "mint-ui"
 import SheetList from "@/components/sheetList"
+import {mapState,mapActions} from "vuex"
 export default {
   name: "SongSheet",
   data() {
@@ -68,14 +71,28 @@ export default {
   components: {
     Header,
     SheetList,
-    Loading
+    Loading,
+    songUrlList:[],
+    currentIndex:''
   },
 
+  computed:{
+    ...mapState({
+      'musicList':state=>state.musicList
+    })
+  },
   created() {
     var listId=this.$route.query.listId;
     getRecommendListDetail(listId).then(res=>{
       if(res.code==200){
         this.listDetail=res.playlist;
+        let items=this.listDetail.tracks;
+        for(var i=0;i<items.length;i++){
+          getSongUrl(items[i].id).then(res=>{
+            this.songUrlList.push(res.data[0]);
+          });
+        }
+
         if(this.listDetail.shareCount>=10000){
           this.listDetail.shareCount=Math.floor(this.listDetail.shareCount/1000)+'万';
         }
@@ -88,9 +105,23 @@ export default {
     })
   },
 
-  computed: {},
+  computed: {
 
-  methods: {}
+  },
+  mounted(){
+
+  },
+  methods: {
+    ...mapActions([
+      'setCurrentSong',
+      'setCurrentIndex'
+    ]),
+    playMusic(item,index){
+      //把当前歌曲加到歌单
+      this.setCurrentIndex(index);
+      this.setCurrentSong(item);
+    }
+  }
 };
 </script>
 <style lang="stylus" scoped>

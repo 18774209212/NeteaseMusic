@@ -25,6 +25,9 @@ p{
 }
 body{
     margin:0 !important;
+    padding:0;
+    width:100%;
+    
 }
 body::-webkit-scrollbar {
     display: none;    

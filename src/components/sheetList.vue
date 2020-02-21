@@ -10,7 +10,7 @@
                   <p>{{item.name}}</p>
                   <p class="singer">{{joinName(item)}}</p>
               </div>
-              <div class="play">
+              <div class="play" @click="play(item,index)">
                   <i class="iconfont icon-bofang1"></i>
               </div>
           </li>
@@ -39,6 +39,9 @@ export default {
             }else{
                 return '';
             }
+        },
+        play(item,index){
+            this.$emit('play',item,index);
         }
     }
 }

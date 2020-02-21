@@ -1,15 +1,24 @@
 import db from "../utils/localStorage"
 
 const mutations={
-    //歌单列表
-    ['SET_SONGLIST'](state,data){
-        state.songList=data;
-        db.save('SET_SONGLIST',data);
-    },
-    //当前播放的歌曲
     ['SET_CURRENTSONG'](state,data){
         state.currentSong=data;
-        db.save('SET_CURRENTSONG',data);
+        localStorage.setItem('currentSong',JSON.stringify(data))
+    },
+    ['SET_PLAYING'](state,data){
+        state.playing=data;
+        // db.save('playing',data);
+    },
+    ['SET_MUSICLIST'](state,data){
+        state.musicList=data;
+        localStorage.setItem('musicList',data)
+    },
+    ['set_CURRENTINDEX'](state,data){
+        state.currentIndex=data;
+        localStorage.setItem('currentIndex',JSON.stringify(data))
+    },
+    ['SET_MODE'](state,data){
+        state.mode=data;
     }
 };
 export default mutations

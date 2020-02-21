@@ -53,7 +53,8 @@
               <p>推荐歌单</p>
           </div>
           <div class="list">
-              <List :recommendSongs="recommendSongs" @select="selectItem"></List>
+              <Loading v-if="recommendSongs.length<=0"></Loading>
+              <List v-else :recommendSongs="recommendSongs" @select="selectItem"></List>
           </div>
       </div>
       <div class="recommend">
@@ -61,6 +62,7 @@
               <p>推荐歌曲</p>
           </div>
           <div class="list">
+              <Loading v-if="newSongs.length<=0"></Loading>
               <SongList :newSongs="newSongs" @selectSong="selectSong"></SongList>
           </div>
       </div>
@@ -68,30 +70,20 @@
 </template>
 
 <script>
-import {recommendSongs,recommendNewSongs} from '@/api/musicAPI'
+import {recommendSongs,recommendNewSongs,banner} from '@/api/musicAPI'
 import Swipe from "@/components/swipe"
 import List from "@/components/list"
 import SongList from "@/components/songList"
-import {mapMutations} from "vuex"
+import Loading from "@/common/loading/loading"
+import {mapMutations, mapActions, mapState} from "vuex"
+import {Toast} from "mint-ui"
+import checkSong from "@/utils/checkSong"
 export default { 
   name:'Home',
   data () {
     return {
         limit:9,
-        bannerList:[
-            {
-                src:'static/imgs/banner1.jpg'
-            },
-            {
-                src:'static/imgs/banner2.jpg'
-            },
-            {
-                src:'static/imgs/banner3.jpg'
-            },
-            {
-                src:'static/imgs/banner4.jpg'
-            }
-        ],
+        bannerList:[],
         recommendSongs:[],
         newSongs:[]
     };
@@ -100,7 +92,8 @@ export default {
   components: {
       Swipe,
       List,
-      SongList
+      SongList,
+      Loading
   },
 
   filters: {
@@ -119,48 +112,91 @@ export default {
       return num;
     }
   },
+  computed:{
+    ...mapState({
+        'musicList':state=>state.musicList
+    })
+  },
   created(){
-      recommendSongs(this.limit).then(res=>{
+      this.getBanner();
+      this.getRecommendSongs();
+      this.getRecommendNewSongs();
+  },
+
+  mounted(){
+      
+  },
+  methods: {
+    ...mapActions([
+        'setCurrentSong',
+        'setMusicList'
+    ]),
+      getBanner(){
+          banner().then(res=>{
+              if(res.code===200){
+                  this.bannerList=res.banners;
+              }else{
+                  Toast('获取banner图失败');
+              }
+          })
+      },
+      getRecommendSongs(){
+        recommendSongs(this.limit).then(res=>{
           let data=res.result;
           for(var i=0;i<data.length;i++){
             data[i].playCount=this.$options.filters['million'](data[i].playCount);
           }
           this.recommendSongs=data;
-          this.$store.commit('SET_SONGLIST',data)
-      });
-      recommendNewSongs(this.limit).then(res=>{
+        });
+      },
+      getRecommendNewSongs(){
+        recommendNewSongs(this.limit).then(res=>{
           let result=res.result;
           this.newSongs=result.slice(0,9);
-      })
-  },
-  computed: {},
-  
-  mounted(){
-  },
-  methods: {
+        })
+      },
       search(){
         this.$router.push({path:'/search'})
       },
       selectItem(item,index){
-          this.$router.push({path:'/songSheet',query:{listId:item.id}});
+        this.$router.push({path:'/songSheet',query:{
+            listId:item.id
+        }});
       },
       selectSong(item){
-          this.$router.push({path:'/playSong',query:{id:item.id}});
-      }
+          this.$router.push({path:'/playSong',query:{
+              id:item.id
+          }});
+        //   debugger
+          let list=this.musicList;
+          if(!(checkSong.check(list,item))){
+              list.push(item)
+          }
+          this.setMusicList(list);
+        //   console.log(this.musicList)
+          //把当前播放的歌曲存起来
+          this.setCurrentSong(item);
+      },
+    //   check(list,item){
+    //       for(var i=0;i<list.length;i++){
+    //           if(list[i].id==item.id) return true;
+    //           else return false;
+    //       }
+    //   }
   }
 }
 
 </script>
 <style lang="stylus" scoped>
 .container{
-    padding:16px 32px 16px 32px;
     font-size:24px;
+    padding:1% 2% 1% 2%;
     .head{
         .iconfont{
             color:#3E3E3E;
         }
         .left{
-            width:9%;
+            width:8%;
             display:inline-block;
         }
         .center{
@@ -169,7 +205,7 @@ export default {
             .tab{
                 li{
                     display:inline-block;
-                    width:23%;
+                    width:20%;
                     color:#ADADAD;
                     font-size:32px;
                     text-align:center;
@@ -181,7 +217,7 @@ export default {
             }
         }
         .right{
-            width:9%;
+            width:8%;
             display:inline-block;
         }
     }

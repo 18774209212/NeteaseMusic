@@ -1,5 +1,12 @@
 import request from '@/utils/request.js'
 
+//获取banner
+export function banner(){
+    return request({
+        url:'/musicApi/banner',
+        method:'get'
+    })
+}
 //推荐歌单
 export function recommendSongs(params){
     return request({
@@ -42,4 +49,19 @@ export function getSongUrl(ids){
         url:'/musicApi/song/url?id='+ids,
         method:'get'
     })
+}
+//检查歌曲是否可用
+export function checkSong(id){
+    return request({
+        url:'/musicApi/check/music?id='+id,
+        method:'get'
+    })
+}
+//收藏/取消歌曲
+export function collect(type,id){
+    return request({
+        url:'/musicApi/playlist/subscribe?t='+type+'&id='+id,
+        method:'get'
+    })
+
 }
